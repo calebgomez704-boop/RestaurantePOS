@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{234E5FC9-5C27-40DB-9D8F-B625B1C420CD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>RestaurantePOS</RootNamespace>
+    <AssemblyName>RestaurantePOS</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <LangVersion>7.3</LangVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="PDFsharp" Version="1.50.5147" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAL\Conexion.cs" />
+    <Compile Include="DAL\DatabaseInitializer.cs" />
+    <Compile Include="DAL\Repositorio.cs" />
+    <Compile Include="DAL\CategoriaDAL.cs" />
+    <Compile Include="DAL\ClienteDAL.cs" />
+    <Compile Include="DAL\MesaDAL.cs" />
+    <Compile Include="DAL\MetodoPagoDAL.cs" />
+    <Compile Include="DAL\ProductoDAL.cs" />
+    <Compile Include="DAL\ProveedorDAL.cs" />
+    <Compile Include="DAL\InsumoDAL.cs" />
+    <Compile Include="DAL\PromocionDAL.cs" />
+    <Compile Include="DAL\RecetaProductoDAL.cs" />
+    <Compile Include="DAL\ReservacionDAL.cs" />
+    <Compile Include="DAL\TurnoDAL.cs" />
+    <Compile Include="Formularios\FormCambiarClave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormCambiarClave.Designer.cs">
+      <DependentUpon>FormCambiarClave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Sesion.cs" />
+    <Compile Include="Formularios\FormClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormClientes.Designer.cs">
+      <DependentUpon>FormClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormEmpleados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormEmpleados.Designer.cs">
+      <DependentUpon>FormEmpleados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormMetodoPago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormMetodoPago.Designer.cs">
+      <DependentUpon>FormMetodoPago.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormPedidos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormPedidos.Designer.cs">
+      <DependentUpon>FormPedidos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormPrincipal.Designer.cs">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormProductos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormProductos.Designer.cs">
+      <DependentUpon>FormProductos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormProveedores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormProveedores.Designer.cs">
+      <DependentUpon>FormProveedores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormCaja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormCaja.Designer.cs">
+      <DependentUpon>FormCaja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormMesas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormMesas.Designer.cs">
+      <DependentUpon>FormMesas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormReportes.Designer.cs">
+      <DependentUpon>FormReportes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Categoria.cs" />
+    <Compile Include="Modelos\Clientes.cs" />
+    <Compile Include="Modelos\DetallePedido.cs" />
+    <Compile Include="Modelos\ItemReporteVenta.cs" />
+    <Compile Include="Formularios\FormReportes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modelos\Empleado.cs" />
+    <Compile Include="Modelos\Mesa.cs" />
+    <Compile Include="Modelos\MetodoPago.cs" />
+    <Compile Include="Modelos\Pedido.cs" />
+    <Compile Include="Modelos\Producto.cs" />
+    <Compile Include="Modelos\Proveedor.cs" />
+    <Compile Include="Modelos\Insumo.cs" />
+    <Compile Include="Modelos\Promocion.cs" />
+    <Compile Include="Modelos\RecetaProducto.cs" />
+    <Compile Include="Modelos\Reservacion.cs" />
+    <Compile Include="Modelos\Turno.cs" />
+    <Compile Include="Formularios\FormInsumos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormInsumos.Designer.cs">
+      <DependentUpon>FormInsumos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormPromociones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormPromociones.Designer.cs">
+      <DependentUpon>FormPromociones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormRecetas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormRecetas.Designer.cs">
+      <DependentUpon>FormRecetas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormReservaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormReservaciones.Designer.cs">
+      <DependentUpon>FormReservaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FormTurnos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormTurnos.Designer.cs">
+      <DependentUpon>FormTurnos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Usuario.cs" />
+    <Compile Include="Modelos\UsuarioActual.cs" />
+    <Compile Include="Servicios\TicketService.cs" />
+    <Compile Include="Servicios\ExportadorService.cs" />
+    <Compile Include="ConfiguracionPOS.cs" />
+    <Compile Include="UITheme.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Formularios\FormCaja.resx">
+      <DependentUpon>FormCaja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormClientes.resx">
+      <DependentUpon>FormClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormEmpleados.resx">
+      <DependentUpon>FormEmpleados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormMesas.resx">
+      <DependentUpon>FormMesas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormMetodoPago.resx">
+      <DependentUpon>FormMetodoPago.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormPedidos.resx">
+      <DependentUpon>FormPedidos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormPrincipal.resx">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormProductos.resx">
+      <DependentUpon>FormProductos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormProveedores.resx">
+      <DependentUpon>FormProveedores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormReportes.resx">
+      <DependentUpon>FormReportes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Imagenes e iconos junto al .exe (carpeta Assets de la instalacion) -->
+    <Content Include="Assets\**\*.png;Assets\**\*.ico;Assets\**\*.jpg;Assets\**\*.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
