@@ -1,0 +1,33 @@
+==============================================
+Sabores del Valle POS - Publicacion
+==============================================
+
+Version leida de AssemblyInfo.cs: 1.0.0.0
+MSBuild: C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\MSBuild.exe
+
+[1/4] Restaurando paquetes NuGet y compilando en Release...
+
+  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos están actualizados para la restauración.
+  RestaurantePOS -> C:\Users\class\Downloads\RestaurantePOS_Comercial\bin\Release\RestaurantePOS.exe
+
+[2/4] Preparando carpeta limpia: C:\Users\class\Downloads\RestaurantePOS_Comercial\Instalador\Publicar
+
+[3/4] Verificando archivos indispensables...
+[ok]    RestaurantePOS.exe
+[ok]    RestaurantePOS.exe.config
+[ok]    System.Data.SQLite.dll
+[ok]    BCrypt.Net-Next.dll
+[ok]    PdfSharp.dll
+[ok]    x64\SQLite.Interop.dll
+[ok]    x86\SQLite.Interop.dll
+
+[4/4] Buscando Inno Setup ISCC.exe...
+ISCC: C:\Program Files (x86)\Inno Setup 6\ISCC.exe
+
+Preprocessing
+==============================================
+LISTO. Instalador generado en:
+C:\Users\class\Downloads\RestaurantePOS_Comercial\Instalador\Salida\RestaurantePOS_Setup.exe
+==============================================
+
