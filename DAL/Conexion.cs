@@ -6,11 +6,11 @@ namespace RestaurantePOS.DAL
 {
     /// <summary>
     /// Fabrica de conexiones SQLite. La base de datos vive en
-    /// %LocalAppData%\SaboresDelValle\restaurante.db (una por usuario de Windows / instalacion).
+    /// C:\ProgramData\RestaurantePOS\Datos\restaurante.db (compartida por los usuarios del equipo).
     /// </summary>
     internal class Conexion
     {
-        private const string NombreCarpeta = "SaboresDelValle";
+        private const string NombreCarpeta = "RestaurantePOS";
         private const string NombreArchivo = "restaurante.db";
 
         private static string _rutaBaseDatos;
@@ -23,9 +23,16 @@ namespace RestaurantePOS.DAL
                 if (_rutaBaseDatos == null)
                 {
                     string carpeta = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        NombreCarpeta);
-                    Directory.CreateDirectory(carpeta);
+                        Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                        NombreCarpeta, "Datos");
+                    try
+                    {
+                        Directory.CreateDirectory(carpeta);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new IOException("No se puede crear o escribir en la carpeta de datos " + carpeta + ". " + ex.Message, ex);
+                    }
                     _rutaBaseDatos = Path.Combine(carpeta, NombreArchivo);
                 }
                 return _rutaBaseDatos;

@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using RestaurantePOS.DAL;
 using RestaurantePOS.Formularios;
 using RestaurantePOS.Modelos;
 
@@ -101,6 +102,7 @@ namespace RestaurantePOS
             btnPromociones.Visible = TienePermiso(puesto, "Promociones");
             btnClientes.Visible = TienePermiso(puesto, "Clientes");
             btnEmpleados.Visible = TienePermiso(puesto, "Empleados");
+            btnCrearRespaldo.Visible = string.Equals(puesto, "Administrador", StringComparison.OrdinalIgnoreCase);
             btnProveedores.Visible = TienePermiso(puesto, "Proveedores");
             btnMetodosPago.Visible = TienePermiso(puesto, "MetodosPago");
             btnReportes.Visible = TienePermiso(puesto, "Reportes");
@@ -247,6 +249,19 @@ namespace RestaurantePOS
         private void btnEmpleados_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel("Empleados", new FormEmpleados(), btnEmpleados);
+        }
+
+        private void btnCrearRespaldo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string ruta = DatabaseInitializer.CrearRespaldoAhora();
+                MessageBox.Show("Respaldo creado correctamente en:\n" + ruta, "Respaldo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo crear el respaldo.\n\n" + ex.Message, "Respaldo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnProveedores_Click(object sender, EventArgs e)

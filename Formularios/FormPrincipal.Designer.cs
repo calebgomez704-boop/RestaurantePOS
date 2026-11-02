@@ -44,6 +44,7 @@
             this.lblCatPersonas = new System.Windows.Forms.Label();
             this.btnClientes = new System.Windows.Forms.Button();
             this.btnEmpleados = new System.Windows.Forms.Button();
+            this.btnCrearRespaldo = new System.Windows.Forms.Button();
             this.btnProveedores = new System.Windows.Forms.Button();
             this.lblCatAnalisis = new System.Windows.Forms.Label();
             this.btnMetodosPago = new System.Windows.Forms.Button();
@@ -89,6 +90,7 @@
             this.flpNav.Controls.Add(this.lblCatPersonas);
             this.flpNav.Controls.Add(this.btnClientes);
             this.flpNav.Controls.Add(this.btnEmpleados);
+            this.flpNav.Controls.Add(this.btnCrearRespaldo);
             this.flpNav.Controls.Add(this.btnProveedores);
             this.flpNav.Controls.Add(this.lblCatAnalisis);
             this.flpNav.Controls.Add(this.btnMetodosPago);
@@ -325,6 +327,23 @@
             this.btnEmpleados.UseVisualStyleBackColor = false;
             this.btnEmpleados.Click += new System.EventHandler(this.btnEmpleados_Click);
             // 
+            // btnCrearRespaldo
+            // 
+            this.btnCrearRespaldo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.btnCrearRespaldo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCrearRespaldo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCrearRespaldo.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnCrearRespaldo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(175)))), ((int)(((byte)(55)))));
+            this.btnCrearRespaldo.Location = new System.Drawing.Point(9, 519);
+            this.btnCrearRespaldo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.btnCrearRespaldo.Name = "btnCrearRespaldo";
+            this.btnCrearRespaldo.Size = new System.Drawing.Size(205, 34);
+            this.btnCrearRespaldo.TabIndex = 14;
+            this.btnCrearRespaldo.Text = "  Crear respaldo ahora";
+            this.btnCrearRespaldo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCrearRespaldo.UseVisualStyleBackColor = false;
+            this.btnCrearRespaldo.Click += new System.EventHandler(this.btnCrearRespaldo_Click);
+            // 
             // btnProveedores
             // 
             this.btnProveedores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
@@ -336,7 +355,7 @@
             this.btnProveedores.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.btnProveedores.Name = "btnProveedores";
             this.btnProveedores.Size = new System.Drawing.Size(205, 34);
-            this.btnProveedores.TabIndex = 14;
+            this.btnProveedores.TabIndex = 15;
             this.btnProveedores.Text = "  Proveedores";
             this.btnProveedores.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnProveedores.UseVisualStyleBackColor = false;
@@ -350,7 +369,7 @@
             this.lblCatAnalisis.Margin = new System.Windows.Forms.Padding(3, 6, 3, 2);
             this.lblCatAnalisis.Name = "lblCatAnalisis";
             this.lblCatAnalisis.Size = new System.Drawing.Size(205, 18);
-            this.lblCatAnalisis.TabIndex = 15;
+            this.lblCatAnalisis.TabIndex = 16;
             this.lblCatAnalisis.Text = "ANÁLISIS";
             this.lblCatAnalisis.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
@@ -365,7 +384,7 @@
             this.btnMetodosPago.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.btnMetodosPago.Name = "btnMetodosPago";
             this.btnMetodosPago.Size = new System.Drawing.Size(205, 34);
-            this.btnMetodosPago.TabIndex = 16;
+            this.btnMetodosPago.TabIndex = 17;
             this.btnMetodosPago.Text = "  Pagos";
             this.btnMetodosPago.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnMetodosPago.UseVisualStyleBackColor = false;
@@ -382,7 +401,7 @@
             this.btnReportes.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.btnReportes.Name = "btnReportes";
             this.btnReportes.Size = new System.Drawing.Size(205, 34);
-            this.btnReportes.TabIndex = 17;
+            this.btnReportes.TabIndex = 18;
             this.btnReportes.Text = "  Reportes";
             this.btnReportes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnReportes.UseVisualStyleBackColor = false;
@@ -502,6 +521,7 @@
         private System.Windows.Forms.Label lblCatPersonas;
         private System.Windows.Forms.Button btnClientes;
         private System.Windows.Forms.Button btnEmpleados;
+        private System.Windows.Forms.Button btnCrearRespaldo;
         private System.Windows.Forms.Button btnProveedores;
         private System.Windows.Forms.Label lblCatAnalisis;
         private System.Windows.Forms.Button btnMetodosPago;

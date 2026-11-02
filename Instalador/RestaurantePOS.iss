@@ -17,7 +17,7 @@
 #define MyAppName      "Sabores del Valle POS"
 #define MyAppPublisher "Sabores del Valle"
 #define MyAppExe       "RestaurantePOS.exe"
-#define MyDataFolder   "SaboresDelValle"
+#define MyDataFolder   "RestaurantePOS"
 
 [Setup]
 AppId={{B7E2C4A1-5D3F-4E8A-9C61-2F7A0D5E8B13}
@@ -28,7 +28,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=Salida
-OutputBaseFilename=Setup_SaboresDelValle
+OutputBaseFilename=RestaurantePOS_Setup
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
@@ -46,8 +46,13 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 ; Todo el contenido de la salida compilada. NUNCA se incluye una base de datos (.db):
-; cada instalacion crea la suya en %LocalAppData%\SaboresDelValle al primer arranque.
+; cada instalacion crea la suya en C:\ProgramData\RestaurantePOS al primer arranque.
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Excludes: "*.pdb,*.db,*.db-wal,*.db-shm,*.vshost.*"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Dirs]
+Name: "{commonappdata}\RestaurantePOS"; Permissions: users-modify
+Name: "{commonappdata}\RestaurantePOS\Datos"; Permissions: users-modify
+Name: "{commonappdata}\RestaurantePOS\Respaldos"; Permissions: users-modify
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExe}"
@@ -56,7 +61,7 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExe}"; Tasks: deskto
 
 [Run]
 ; runasoriginaluser: la aplicacion se abre con el usuario normal (no como administrador)
-; para que su base de datos quede en el %LocalAppData% de ese usuario.
+; para que la aplicacion se ejecute con el usuario normal.
 Filename: "{app}\{#MyAppExe}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent runasoriginaluser
 
 [Code]
@@ -72,6 +77,14 @@ begin
             and (Release >= NetFx472Release);
 end;
 
+function VisualCRedistributableInstalado: Boolean;
+begin
+  Result := RegKeyExists(HKLM, 'SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64') or
+            RegKeyExists(HKLM, 'SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86') or
+            RegKeyExists(HKLM32, 'SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64') or
+            RegKeyExists(HKLM32, 'SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86');
+end;
+
 function InitializeSetup: Boolean;
 begin
   Result := True;
@@ -85,23 +98,28 @@ begin
            mbError, MB_OK);
     Result := False;
   end;
+  if Result and (not VisualCRedistributableInstalado) then
+    MsgBox('No se detectó Microsoft Visual C++ 2015-2022 Redistributable.' + #13#10#13#10 +
+           'Descárguelo desde:' + #13#10 +
+           'https://aka.ms/vs/17/release/vc_redist.x64.exe' + #13#10#13#10 +
+           'La aplicación puede no iniciar hasta instalarlo.', mbInformation, MB_OK);
 end;
 
-// Al desinstalar: preguntar si se conservan los datos (por defecto SI se conservan).
+// Al desinstalar: preguntar si se borran los datos (por defecto NO se borran).
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
   Carpeta: String;
 begin
   if CurUninstallStep = usPostUninstall then
   begin
-    Carpeta := ExpandConstant('{localappdata}\{#MyDataFolder}');
+    Carpeta := ExpandConstant('{commonappdata}\{#MyDataFolder}');
     if DirExists(Carpeta) and (not UninstallSilent) then
     begin
-      if MsgBox('Desea CONSERVAR sus datos (usuarios, pedidos, ventas, reportes)?' + #13#10#13#10 +
-                'Si elige "Si", se conservan en:' + #13#10 + Carpeta + #13#10 +
-                'y estaran disponibles si vuelve a instalar el programa.' + #13#10#13#10 +
-                'Si elige "No", se ELIMINAN de forma permanente.',
-                mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDNO then
+      if MsgBox('¿Desea borrar todos los datos del restaurante?' + #13#10#13#10 +
+                'Si elige "No", se conservarán en:' + #13#10 + Carpeta + #13#10 +
+                'y estarán disponibles si vuelve a instalar el programa.' + #13#10#13#10 +
+                'Esta acción no se puede deshacer.',
+                mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES then
       begin
         DelTree(Carpeta, True, True, True);
       end;

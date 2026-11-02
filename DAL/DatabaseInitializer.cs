@@ -1,5 +1,7 @@
 using System;
 using System.Data.SQLite;
+using System.IO;
+using System.Linq;
 
 namespace RestaurantePOS.DAL
 {
@@ -10,36 +12,115 @@ namespace RestaurantePOS.DAL
     /// </summary>
     public static class DatabaseInitializer
     {
-        // Version del esquema/siembra guardada en PRAGMA user_version.
-        private const int VersionSiembra = 1;
+        private const int VersionActual = 1;
+        private const string NombreRespaldo = "restaurante.db";
 
         public static void Inicializar()
         {
-            Conexion conexion = new Conexion();
-            using (SQLiteConnection cn = conexion.ObtenerConexion())
+            PrepararRutaBaseDatos();
+            int version = ObtenerVersionSinAbrir();
+            string respaldoMigracion = null;
+            if (version < VersionActual && File.Exists(Conexion.RutaBaseDatos))
             {
-                cn.Open();
+                respaldoMigracion = CrearRespaldo("restaurante_v" + VersionActual + "_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".db");
+            }
 
-                using (SQLiteTransaction tr = cn.BeginTransaction())
+            Conexion conexion = new Conexion();
+            try
+            {
+                using (SQLiteConnection cn = conexion.ObtenerConexion())
                 {
-                    EjecutarNonQuery(cn, tr, SqlEsquema);
-
-                    bool sembrar = ObtenerUserVersion(cn, tr) < VersionSiembra
-                                   && ContarFilas(cn, tr, "Empleados") == 0;
-
-                    if (sembrar)
+                    cn.Open();
+                    int versionActual = ObtenerUserVersion(cn, null);
+                    while (versionActual < VersionActual)
                     {
-                        SembrarDatosIniciales(cn, tr);
+                        using (SQLiteTransaction tr = cn.BeginTransaction())
+                        {
+                            EjecutarMigracion(cn, tr, versionActual + 1);
+                            EjecutarNonQuery(cn, tr, "PRAGMA user_version = " + (versionActual + 1) + ";");
+                            tr.Commit();
+                        }
+                        versionActual++;
                     }
-
-                    if (ObtenerUserVersion(cn, tr) < VersionSiembra)
-                    {
-                        EjecutarNonQuery(cn, tr, "PRAGMA user_version = " + VersionSiembra + ";");
-                    }
-
-                    tr.Commit();
                 }
             }
+            catch
+            {
+                if (!string.IsNullOrEmpty(respaldoMigracion) && File.Exists(respaldoMigracion))
+                {
+                    File.Copy(respaldoMigracion, Conexion.RutaBaseDatos, true);
+                }
+                throw;
+            }
+
+            CrearRespaldoDiario();
+        }
+
+        public static string CrearRespaldoAhora()
+        {
+            PrepararRutaBaseDatos();
+            return CrearRespaldo("restaurante_manual_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".db");
+        }
+
+        private static void PrepararRutaBaseDatos()
+        {
+            string rutaNueva = Conexion.RutaBaseDatos;
+            string rutaAntigua = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SaboresDelValle", NombreRespaldo);
+            if (!File.Exists(rutaNueva) && File.Exists(rutaAntigua))
+            {
+                File.Copy(rutaAntigua, rutaNueva);
+            }
+        }
+
+        private static int ObtenerVersionSinAbrir()
+        {
+            if (!File.Exists(Conexion.RutaBaseDatos)) return 0;
+            using (SQLiteConnection cn = new Conexion().ObtenerConexion())
+            {
+                cn.Open();
+                return ObtenerUserVersion(cn, null);
+            }
+        }
+
+        private static void EjecutarMigracion(SQLiteConnection cn, SQLiteTransaction tr, int version)
+        {
+            if (version == 1)
+            {
+                EjecutarNonQuery(cn, tr, SqlEsquema);
+                if (ContarFilas(cn, tr, "Empleados") == 0)
+                {
+                    SembrarDatosIniciales(cn, tr);
+                }
+                return;
+            }
+            throw new InvalidOperationException("No existe la migración " + version + ".");
+        }
+
+        private static string CrearRespaldo(string nombreArchivo)
+        {
+            string carpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RestaurantePOS", "Respaldos");
+            try
+            {
+                Directory.CreateDirectory(carpeta);
+                string destino = Path.Combine(carpeta, nombreArchivo);
+                File.Copy(Conexion.RutaBaseDatos, destino, true);
+                return destino;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("No se pudo crear el respaldo de la base de datos en " + carpeta + ". " + ex.Message, ex);
+            }
+        }
+
+        private static void CrearRespaldoDiario()
+        {
+            string carpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RestaurantePOS", "Respaldos");
+            string nombre = "restaurante_diario_" + DateTime.Now.ToString("yyyyMMdd") + ".db";
+            if (!File.Exists(Path.Combine(carpeta, nombre))) CrearRespaldo(nombre);
+
+            var archivos = Directory.GetFiles(carpeta, "restaurante_*.db")
+                .OrderByDescending(File.GetCreationTimeUtc).ToList();
+            foreach (string archivo in archivos.Skip(14)) File.Delete(archivo);
         }
 
         // =====================================================================
@@ -85,7 +166,7 @@ CREATE TABLE IF NOT EXISTS Empleados (
     Activo           INTEGER NOT NULL DEFAULT 1,
     Usuario          TEXT NULL COLLATE NOCASE UNIQUE,
     ContrasenaHash   TEXT NULL,
-    CambiarClave     INTEGER NOT NULL DEFAULT 0,
+    CambiarClave     INTEGER NOT NULL DEFAULT 1,
     IntentosFallidos INTEGER NOT NULL DEFAULT 0,
     BloqueadoHasta   TEXT NULL
 );

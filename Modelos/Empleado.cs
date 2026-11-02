@@ -12,7 +12,7 @@ namespace RestaurantePOS.Modelos
         private string _telefono = string.Empty;
         private string _usuario = string.Empty;
         private string _contrasenaHash = string.Empty;
-        private bool _cambiarClave = false;
+        private bool _cambiarClave = true;
         private bool _activo = true;
         private int _intentosFallidos = 0;
         private DateTime? _bloqueadoHasta;
